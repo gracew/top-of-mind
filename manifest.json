@@ -1,13 +1,10 @@
 {
-  "name": "Getting Started Example",
-  "description": "Build an Extension!",
+  "name": "Top of Mind",
+  "description": "Automatically generate comments on Linkedin posts to keep you top of mind in your network.",
   "version": "1.0",
   "manifest_version": 3,
   "permissions": ["storage", "activeTab", "scripting"],
-  "background": {
-    "service_worker": "background.js"
-  },
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "out/index.html"
   }
 }
