@@ -4,6 +4,13 @@
   "version": "1.0",
   "manifest_version": 3,
   "permissions": ["storage", "activeTab", "scripting"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [{
+    "matches": ["*://*.linkedin.com/*"],
+    "js": ["contentScript.js"]
+  }],
   "action": {
     "default_popup": "out/index.html"
   }
