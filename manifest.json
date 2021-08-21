@@ -12,6 +12,6 @@
     "js": ["contentScript.js"]
   }],
   "action": {
-    "default_popup": "out/index.html"
+    "default_popup": "./index.html"
   }
 }
