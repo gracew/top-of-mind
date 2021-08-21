@@ -1,10 +1,10 @@
 import type { NextPage } from 'next';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Badge, Button, Card, Form, Image } from 'react-bootstrap';
 import { ArrowRepeat } from 'react-bootstrap-icons';
 import styles from '../styles/Home.module.css';
 
-const data = {
+const sampleData = {
   "ember71": {
     "name": "Patrick Campbell",
     "imageSrc": "https://media-exp1.licdn.com/dms/image/C4E03AQFhrcdTHKJbvg/profile-displayphoto-shrink_100_100/0/1522429087940?e=1634774400&v=beta&t=9f0-eWCJhVPb8EgJWoGiAiR7jdxndbMI5IqDscoACoc",
@@ -28,14 +28,19 @@ const data = {
 };
 
 const Home: NextPage = () => {
-  /*const [data, setData] = useState({});
+  const [data, setData] = useState<Record<string, any>>({});
 
   useEffect(() => {
-    chrome.runtime.onMessage.addListener((msg) => setData(msg));
-  });*/
+    if (process.env.NODE_ENV === "development") {
+      setData(sampleData);
+    } else {
+      chrome.runtime.onMessage.addListener((msg) => setData(msg));
+    }
+  });
   return (
     <div className={styles.container}>
       <main className={styles.main}>
+        <h2>Top of Mind</h2>
         {Object.entries(data).map(([id, post]) => <Card className={styles.card} key={id}>
           <Card.Body>
             <Card.Title className={styles.cardTitle}>
