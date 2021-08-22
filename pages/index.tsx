@@ -32,7 +32,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
-      setData([]);
+      setData(sampleData);
     } else {
       chrome.runtime.onMessage.addListener((msg) => setData(msg));
     }
