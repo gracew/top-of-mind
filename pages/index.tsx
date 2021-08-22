@@ -34,9 +34,20 @@ const Home: NextPage = () => {
     if (process.env.NODE_ENV === "development") {
       setData(sampleData);
     } else {
-      chrome.runtime.onMessage.addListener((msg) => setData(msg));
+      chrome.runtime.onMessage.addListener((msg) => {
+        if (msg.type === "get_posts") {
+          setData(msg.data);
+        }
+      });
     }
   }, []);
+
+  function sendScrollMessage(id: string) {
+    chrome.tabs.query({ active: true, currentWindow: true}, function(tabs) {
+      const activeTab = tabs[0];
+      chrome.tabs.sendMessage(activeTab.id as number, { type: "scroll_to", id });
+    });
+  }
 
   return (
     <div className={styles.container}>
@@ -44,7 +55,7 @@ const Home: NextPage = () => {
         <h2>Top of Mind</h2>
         {Object.entries(data).length === 0 && <div>
           We haven&lsquo;t found any LinkedIn posts by your connections yet. Keep scrolling LinkedIn until you find one!
-          </div>}
+        </div>}
         {Object.entries(data).length > 0 && Object.entries(data).map(([id, post]) => <Card className={styles.card} key={id}>
           <Card.Body>
             <Card.Title className={styles.cardTitle}>
@@ -52,7 +63,7 @@ const Home: NextPage = () => {
                 <Image className={styles.cardImage} src={post.imageSrc} alt={post.name} roundedCircle />
                 <span>{post.name}</span>
               </div>
-              <Button variant="light">Go to post</Button>
+              <Button variant="light" onClick={() => sendScrollMessage(id)}>Go to post</Button>
             </Card.Title>
             <Card.Text className={`text-truncate ${styles.cardText}`}>
               {post.text}

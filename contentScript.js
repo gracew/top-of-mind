@@ -5,12 +5,21 @@ window.addEventListener("scroll", function () {
     // filter out Promoted posts
     .filter(el => el.querySelector(".feed-shared-actor__sub-description")?.innerText !== "Promoted");
 
-  const data = Object.assign({}, ...postElements.map((el) => ({ [el.id]: {
-    name: el.querySelector(".feed-shared-actor__name span")?.innerText,
-    imageSrc: el.querySelector(".feed-shared-actor__avatar-image").src,
-    text: el.querySelector(".feed-shared-text span span")?.innerText,
-  }})));
+  const data = Object.assign({}, ...postElements.map((el) => ({
+    [el.id]: {
+      name: el.querySelector(".feed-shared-actor__name span")?.innerText,
+      imageSrc: el.querySelector(".feed-shared-actor__avatar-image").src,
+      text: el.querySelector(".feed-shared-text span span")?.innerText,
+    }
+  })));
 
   console.log(data);
-  chrome.runtime.sendMessage(data);
+  chrome.runtime.sendMessage({ type: "get_posts", data });
+});
+
+chrome.runtime.onMessage.addListener((msg) => {
+  console.log(msg);
+  if (msg.type === "scroll_to") {
+    document.getElementById(msg.id).scrollIntoView();
+  }
 });
