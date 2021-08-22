@@ -32,32 +32,36 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
-      setData(sampleData);
+      setData([]);
     } else {
       chrome.runtime.onMessage.addListener((msg) => setData(msg));
     }
-  });
+  }, []);
+
   return (
     <div className={styles.container}>
       <main className={styles.main}>
         <h2>Top of Mind</h2>
-        {Object.entries(data).map(([id, post]) => <Card className={styles.card} key={id}>
+        {Object.entries(data).length === 0 && <div>
+          We haven&lsquo;t found any LinkedIn posts by your connections yet. Keep scrolling LinkedIn until you find one!
+          </div>}
+        {Object.entries(data).length > 0 && Object.entries(data).map(([id, post]) => <Card className={styles.card} key={id}>
           <Card.Body>
             <Card.Title className={styles.cardTitle}>
               <div>
-                <Image className={styles.cardImage} src={post.imageSrc} roundedCircle />
+                <Image className={styles.cardImage} src={post.imageSrc} alt={post.name} roundedCircle />
                 <span>{post.name}</span>
               </div>
               <Button variant="light">Go to post</Button>
             </Card.Title>
-            <Card.Text>
+            <Card.Text className={`text-truncate ${styles.cardText}`}>
               {post.text}
             </Card.Text>
           </Card.Body>
           <hr style={{ margin: 0 }} />
           <Card.Body>
             <Badge bg="secondary">
-              Suggested text
+              Suggested comment
             </Badge>
             <Form.Control as="textarea" className={styles.suggestion} disabled value="Thank you so much for sharing your experience." />
             <div className={styles.buttonContainer}>
