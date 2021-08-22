@@ -21,5 +21,11 @@ chrome.runtime.onMessage.addListener((msg) => {
   console.log(msg);
   if (msg.type === "scroll_to") {
     document.getElementById(msg.id).scrollIntoView();
+  } else if (msg.type === "fill") {
+    const postElement = document.getElementById(msg.id);
+    if (postElement) {
+      postElement.querySelector(".comment-button").click();
+      postElement.querySelector(".ql-editor p").innerText = msg.text;
+    }
   }
 });

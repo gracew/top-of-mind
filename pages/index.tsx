@@ -49,6 +49,13 @@ const Home: NextPage = () => {
     });
   }
 
+  function sendFillMessage(id: string, text: string) {
+    chrome.tabs.query({ active: true, currentWindow: true}, function(tabs) {
+      const activeTab = tabs[0];
+      chrome.tabs.sendMessage(activeTab.id as number, { type: "fill", id, text });
+    });
+  }
+
   return (
     <div className={styles.container}>
       <main className={styles.main}>
@@ -78,7 +85,7 @@ const Home: NextPage = () => {
             <div className={styles.buttonContainer}>
               <div>
                 <Button variant="light"><ArrowRepeat size={20} /></Button>
-                <Button>Fill</Button>
+                <Button onClick={() => sendFillMessage(id, "Thank you so much for sharing your experience.")}>Fill</Button>
               </div>
             </div>
           </Card.Body>
