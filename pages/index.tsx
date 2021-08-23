@@ -33,7 +33,6 @@ const sampleData = [
 
 const Home: NextPage = () => {
   const [data, setData] = useState<Array<any>>([]);
-  console.log("react: " + new Date());
 
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
@@ -52,15 +51,13 @@ const Home: NextPage = () => {
 
   function sendScrollMessage(id: string) {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      const activeTab = tabs[0];
-      chrome.tabs.sendMessage(activeTab.id as number, { type: "scroll_to", id });
+      chrome.tabs.sendMessage(tabs[0].id as number, { type: "scroll_to", id });
     });
   }
 
   function sendFillMessage(id: string, text: string) {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      const activeTab = tabs[0];
-      chrome.tabs.sendMessage(activeTab.id as number, { type: "fill", id, text });
+      chrome.tabs.sendMessage(tabs[0].id as number, { type: "fill", id, text });
     });
   }
 

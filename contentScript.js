@@ -22,7 +22,6 @@ getPosts();
 window.addEventListener("scroll", getPosts);
 
 chrome.runtime.onMessage.addListener((msg) => {
-  console.log(msg);
   if (msg.type === "scroll_to") {
     document.getElementById(msg.id).scrollIntoView();
   } else if (msg.type === "fill") {

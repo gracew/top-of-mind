@@ -3,7 +3,7 @@
   "description": "Automatically generate comments on Linkedin posts to keep you top of mind in your network.",
   "version": "1.0",
   "manifest_version": 3,
-  "permissions": ["storage", "activeTab"],
+  "permissions": ["storage"],
   "content_scripts": [{
     "matches": ["*://*.linkedin.com/*"],
     "js": ["contentScript.js"]
