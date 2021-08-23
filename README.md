@@ -23,7 +23,7 @@ data, versus fetching new post data from LinkedIn.
 ```
 
 Then, follow steps 1-3 on [this page](https://developer.chrome.com/docs/extensions/mv3/getstarted/#manifest) to load the
-extension in Chrome.
+extension in Chrome. Select the `out/` subdirectory.
 
 In order to update the extension, you need to rebuild and click 'Update' on the Chrome extensions page
 (chrome://extensions). Since this is a slower iteration cycle try to use the [Local development](#local-development)

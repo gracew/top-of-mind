@@ -4,6 +4,5 @@ yarn build
 
 cp manifest.json ./out
 cp contentScript.js ./out
-cp background.js ./out
 mv ./out/_next ./out/next
 cd ./out && grep -rli '_next' * | xargs -I@ sed -i '' 's/_next/next/g' @;
