@@ -22,9 +22,10 @@ const PostComponent = (props: PostProps) => {
 
   useEffect(() => {
     if (suggestedComments && suggestedComments.length > 0) {
-      setComment(suggestedComments[0]);
+      const i = Math.floor(Math.random() * suggestedComments.length);
+      setComment(suggestedComments[i]);
     };
-  }, [suggestedComments])
+  }, [suggestedComments]);
 
   function sendScrollMessage(id: string) {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {

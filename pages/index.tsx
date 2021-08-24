@@ -1,8 +1,8 @@
 import type { NextPage } from 'next';
 import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
-import styles from '../styles/Home.module.css';
 import PostComponent from '../components/post';
+import styles from '../styles/Home.module.css';
 
 const sampleData = [
   {
@@ -44,16 +44,18 @@ const Home: NextPage = () => {
     if (process.env.NODE_ENV === "development") {
       setData(sampleData);
     } else {
-      // seed posts on page load
-      chrome.storage.local.get("posts", result => setData(result.posts));
       // add listener for when new data is added
       chrome.runtime.onMessage.addListener((msg) => {
-        if (msg.type === "get_posts") {
-          chrome.storage.local.get("posts", result => setData(result.posts));
+        if (msg.type === "new_posts") {
+          setData(msg.posts);
         }
       });
+      // seed posts on page load
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.tabs.sendMessage(tabs[0].id as number, { type: "get_posts" });
+      });
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const commentsNeeded = data.filter(p => !suggestedComments[p.id]);
