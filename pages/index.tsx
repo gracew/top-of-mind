@@ -1,8 +1,8 @@
 import type { NextPage } from 'next';
 import React, { useEffect, useState } from 'react';
-import { Badge, Button, Card, Form, Image } from 'react-bootstrap';
-import { ArrowRepeat } from 'react-bootstrap-icons';
+import { Form } from 'react-bootstrap';
 import styles from '../styles/Home.module.css';
+import PostComponent from '../components/post';
 
 const sampleData = [
   {
@@ -37,6 +37,7 @@ const sampleData = [
 
 const Home: NextPage = () => {
   const [data, setData] = useState<Array<any>>([]);
+  const [suggestedComments, setSuggestedComments] = useState<Record<string, string[]>>({});
   const [firstOrderOnly, setFirstOrderOnly] = useState(false);
 
   useEffect(() => {
@@ -52,19 +53,21 @@ const Home: NextPage = () => {
         }
       });
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  function sendScrollMessage(id: string) {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      chrome.tabs.sendMessage(tabs[0].id as number, { type: "scroll_to", id });
-    });
-  }
-
-  function sendFillMessage(id: string, text: string) {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      chrome.tabs.sendMessage(tabs[0].id as number, { type: "fill", id, text });
-    });
-  }
+  useEffect(() => {
+    const commentsNeeded = data.filter(p => !suggestedComments[p.id]);
+    if (commentsNeeded.length === 0) {
+      return;
+    }
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"}/api/getSuggestedComments`, {
+      method: 'post',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(commentsNeeded),
+    })
+      .then(res => res.json())
+      .then(jsonRes => setSuggestedComments(prevValue => ({ ...prevValue, ...jsonRes })));
+  }, [data]);  // eslint-disable-line react-hooks/exhaustive-deps
 
   const filteredData = data.filter(d => firstOrderOnly ? d.firstOrder : true);
   return (
@@ -83,33 +86,7 @@ const Home: NextPage = () => {
         </div>}
         {filteredData.length > 0 &&
           <div>
-            {filteredData.map(post => <Card className={styles.card} key={post.id}>
-              <Card.Body>
-                <Card.Title className={styles.cardTitle}>
-                  <div>
-                    <Image className={styles.cardImage} src={post.imageSrc} alt={post.name} roundedCircle />
-                    <span>{post.name}</span>
-                  </div>
-                  <Button variant="light" onClick={() => sendScrollMessage(post.id)}>Go to post</Button>
-                </Card.Title>
-                <Card.Text className={`text-truncate ${styles.cardText}`}>
-                  {post.text}
-                </Card.Text>
-              </Card.Body>
-              <hr style={{ margin: 0 }} />
-              <Card.Body>
-                <Badge bg="secondary">
-                  Suggested comment
-                </Badge>
-                <Form.Control as="textarea" className={styles.suggestion} disabled value="Thank you so much for sharing your experience." />
-                <div className={styles.buttonContainer}>
-                  <div>
-                    <Button variant="light"><ArrowRepeat size={20} /></Button>
-                    <Button onClick={() => sendFillMessage(post.id, "Thank you so much for sharing your experience.")}>Fill</Button>
-                  </div>
-                </div>
-              </Card.Body>
-            </Card>)}
+            {filteredData.map(post => <PostComponent key={post.id} post={post} suggestedComments={suggestedComments[post.id]} />)}
             <div>Keep scrolling LinkedIn to load more posts and AI-generated responses!</div>
           </div>
         }

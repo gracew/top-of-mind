@@ -1,0 +1,45 @@
+.card {
+  margin: 20px 0;
+}
+
+.cardTitle {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cardImage {
+  width: 36px;
+  height: 36px;
+  margin-right: 10px;
+}
+
+.cardText {
+  font-size: 14px;
+}
+
+.suggestionLabel {
+  font-size: 14px;
+}
+
+.suggestion {
+  resize: none;
+  margin: 5px 0 10px 0;
+  font-size: 14px;
+}
+
+.spinnerContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.buttonContainer {
+  display: flex;
+}
+
+.buttonContainer div {
+  margin-left: auto;
+}
+
+.buttonContainer button {
+  margin-left: 10px;
+}
