@@ -6,7 +6,7 @@ import styles from '../styles/Post.module.css';
 interface Post {
   id: string;
   name: string;
-  imageSrc: string;
+  imageSrc?: string | null;
   text: string;
   firstOrder: boolean;
 }
@@ -56,7 +56,7 @@ const PostComponent = (props: PostProps) => {
       <Card.Body>
         <Card.Title className={styles.cardTitle}>
           <div>
-            <Image className={styles.cardImage} src={post.imageSrc} alt={post.name} roundedCircle />
+            <Image className={styles.cardImage} src={post.imageSrc || "/ghostAvatar.png"} alt={post.name} roundedCircle />
             <span>{post.name}</span>
           </div>
           <Button variant="light" onClick={() => sendScrollMessage(post.id)}>Go to post</Button>

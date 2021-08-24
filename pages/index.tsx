@@ -29,7 +29,7 @@ const sampleData = [
   {
     "id": "ember289",
     "name": "Ngozi Okonjo-Iweala",
-    "imageSrc": "https://media-exp1.licdn.com/dms/image/C4D03AQE46jD2vMvxzw/profile-displayphoto-shrink_100_100/0/1614130181731?e=1634774400&v=beta&t=oPbqbZ6TUnqdWr_eORV1qFMclQFKiNRPquVKD2B27V0",
+    "imageSrc": null,
     "text": "I welcome the ruling of the Swiss Press Council calling out the gender bias & sexism of Swiss newspaper Aargauer Zeitung for its headline ‘Grandmother becomes boss of WTO’ upon my appointment. It is right to call out sexism, racism or both when you see it!",
     "firstOrder": false,
   }
