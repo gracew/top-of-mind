@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import PostComponent from '../components/post';
 import styles from '../styles/Home.module.css';
@@ -36,6 +36,7 @@ const sampleData = [
 ];
 
 const Home: NextPage = () => {
+  const endOfPageRef = useRef<any>();
   const [data, setData] = useState<Array<any>>([]);
   const [suggestedComments, setSuggestedComments] = useState<Record<string, string[]>>({});
   const [firstOrderOnly, setFirstOrderOnly] = useState(false);
@@ -58,6 +59,7 @@ const Home: NextPage = () => {
   }, []);
 
   useEffect(() => {
+    endOfPageRef.current?.scrollIntoView({ behavior: "smooth" });
     const commentsNeeded = data.filter(p => !suggestedComments[p.id]);
     if (commentsNeeded.length === 0) {
       return;
@@ -89,7 +91,7 @@ const Home: NextPage = () => {
         {filteredData.length > 0 &&
           <div>
             {filteredData.map(post => <PostComponent key={post.id} post={post} suggestedComments={suggestedComments[post.id]} />)}
-            <div>Keep scrolling LinkedIn to load more posts and AI-generated responses!</div>
+            <div ref={endOfPageRef}>Keep scrolling LinkedIn to load more posts and AI-generated responses!</div>
           </div>
         }
       </main>

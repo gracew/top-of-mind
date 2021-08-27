@@ -1,3 +1,5 @@
+set -e
+
 # https://dev.to/alexbh/using-next-js-to-create-a-browser-extension-chrome-firefox-490h
 
 yarn build

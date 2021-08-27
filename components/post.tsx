@@ -77,7 +77,7 @@ const PostComponent = (props: PostProps) => {
           <Form.Control as="textarea" className={styles.suggestion} disabled value={comment} />
           <div className={styles.buttonContainer}>
             <div>
-              <Button onClick={selectNewComment} variant="light"><ArrowRepeat size={20} /></Button>
+              <Button onClick={selectNewComment} variant="success"><ArrowRepeat size={20} /></Button>
               <Button onClick={() => sendFillMessage(post.id, comment)}>Fill</Button>
             </div>
           </div>
