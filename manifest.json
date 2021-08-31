@@ -1,6 +1,6 @@
 {
   "name": "Top of Mind",
-  "description": "Automatically generate comments on Linkedin posts to keep you top of mind in your network.",
+  "description": "Automatically generate comments on LinkedIn posts to keep you top of mind in your network.",
   "version": "1.0",
   "manifest_version": 3,
   "permissions": [],
