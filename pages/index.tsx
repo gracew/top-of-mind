@@ -48,7 +48,9 @@ const Home: NextPage = () => {
       // add listener for when new data is added
       chrome.runtime.onMessage.addListener((msg) => {
         if (msg.type === "new_posts") {
-          setData(msg.posts);
+          // only set data if there's new posts to avoid auto-scroll to the bottom of the extension if the user is
+          // actually scrolling up on the LinkedIn page
+          setData(prevData => msg.posts.length > prevData.length ? msg.posts : prevData);
         }
       });
       // seed posts on page load
