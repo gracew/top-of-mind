@@ -58,32 +58,33 @@ export default async function handler(
 
   const result: Record<string, string[]> = {};
   await Promise.all(req.body.map(async (post: any) => {
-
-    const res = await fetch('https://api.openai.com/v1/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + OPENAI_API_KEY,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        prompt: post.text.split(" ").splice(0,30).join(" ") + ' ->',
-        model: 'ada:ft-user-pjd1gsylxfwus4hxkrav7pke-2021-08-22-00-24-36',
-        max_tokens: 1
-      })
-    }).catch(e => {
+    try {
+      const res = await fetch('https://api.openai.com/v1/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + OPENAI_API_KEY,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: post.text.split(" ").splice(0, 30).join(" ") + ' ->',
+          model: 'ada:ft-user-pjd1gsylxfwus4hxkrav7pke-2021-08-22-00-24-36',
+          max_tokens: 1
+        })
+      });
+      const data = await res.json()
+      const action = data.choices[0].text
+      if (action == ' c') {
+        result[post.id] = responses_c
+      } else if (action == ' a') {
+        result[post.id] = responses_a
+      } else if (action == ' s') {
+        result[post.id] = responses_s
+      }
+    }
+    catch (e) {
       console.error(e)
       result[post.id] = responses_all
-    })
-    const data = await res.json()
-    const action = data.choices[0].text
-    if (action == ' c') {
-      result[post.id] = responses_c
-    } else if (action == ' a') {
-      result[post.id] = responses_a
-    } else if (action == ' s') {
-      result[post.id] = responses_s
     }
-
   }));
   res.status(200).json(result)
 
